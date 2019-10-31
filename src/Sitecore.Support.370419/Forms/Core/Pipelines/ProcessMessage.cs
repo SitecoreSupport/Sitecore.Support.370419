@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Sitecore.Forms.Core.Pipelines
+namespace Sitecore.Support.Forms.Core.Pipelines
 {
   using System;
   using System.Net.Mail;
@@ -119,6 +119,18 @@ namespace Sitecore.Forms.Core.Pipelines
         args.CC.Replace(string.Join(string.Empty, new[] { "[", item.ID.ToString(), "]" }), value);
         args.CC.Replace(string.Join(string.Empty, new[] { item.ID.ToString() }), value);
         args.Subject.Replace(string.Join(string.Empty, new[] { "[", item.ID.ToString(), "]" }), value);
+
+        #region fix
+        args.From = args.From.Replace("[Value: " + item.FieldDisplayName + "]", field.Value);
+        args.To.Replace(string.Join(string.Empty, new[] { "[Value: ", item.FieldDisplayName, "]" }), field.Value);
+        args.CC.Replace(string.Join(string.Empty, new[] { "[Value: ", item.FieldDisplayName, "]" }), field.Value);
+        args.Subject.Replace(string.Join(string.Empty, new[] { "[Value: ", item.FieldDisplayName, "]" }), field.Value);
+
+        args.From = args.From.Replace("[Text: " + item.FieldDisplayName + "]", value);
+        args.To.Replace(string.Join(string.Empty, new[] { "[Text: ", item.FieldDisplayName, "]" }), value);
+        args.CC.Replace(string.Join(string.Empty, new[] { "[Text: ", item.FieldDisplayName, "]" }), value);
+        args.Subject.Replace(string.Join(string.Empty, new[] { "[Text: ", item.FieldDisplayName, "]" }), value);
+        #endregion
 
         args.From = args.From.Replace("[" + item.FieldDisplayName + "]", value);
         args.To.Replace(string.Join(string.Empty, new[] { "[", item.FieldDisplayName, "]" }), value);
